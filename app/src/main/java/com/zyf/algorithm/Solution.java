@@ -1,5 +1,7 @@
 package com.zyf.algorithm;
 
+import org.w3c.dom.Node;
+
 /**
  * Created by zyf on 2019/3/20.
  */
@@ -13,17 +15,18 @@ public class Solution {
      * 在慢指针前进的过程中，同时修改其 next 指针，使得链表前半部分反序。
      * 最后比较中点两侧的链表是否相等。
      */
-    private static boolean isPalindrome(Node head) {
+    private static boolean isPalindrome(ListNode head) {
         if (head == null || head.next == null) {
             return true;
         }
-        Node pre = null;
-        Node slow = head;
-        Node fast = head;
+        ListNode pre = null;
+        ListNode next;
+        ListNode slow = head;
+        ListNode fast = head;
 
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
-            Node next = slow.next;
+            next = slow.next;
             slow.next = pre;
             pre = slow;
             slow = next;
@@ -32,7 +35,7 @@ public class Solution {
         if (fast != null) {
             slow = slow.next;
         }
-        while (slow.next != null) {
+        while (slow.next != null && pre != null) {
             if (slow.val != pre.val) {
                 return false;
             }
@@ -46,13 +49,13 @@ public class Solution {
      * 反转字符串
      * @param head 头结点
      */
-    private static Node reverse(Node head) {
+    private static ListNode reverse(ListNode head) {
         if (head == null || head.next == null) {
             return head;
         }
 
-        Node pre = null;
-        Node next = null;
+        ListNode pre = null;
+        ListNode next = null;
         while (head != null) {
             next = head.next; //持有下一个结点的引用
             head.next = pre; //将当前结点对下一个结点的引用指向前一个结点
@@ -65,13 +68,13 @@ public class Solution {
     /**
      * 链表中环的检测
      */
-    private static boolean isLoop(Node head) {
+    private static boolean isLoop(ListNode head) {
         if (head == null || head.next == null) {
             return false;
         }
 
-        Node slow = head;
-        Node fast = head;
+        ListNode slow = head;
+        ListNode fast = head;
 
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
@@ -86,13 +89,13 @@ public class Solution {
     /**
      * 获取链表中环的起点
      */
-    private static Node loopStarPoint(Node head) {
+    private static ListNode loopStarPoint(ListNode head) {
         if (head == null || head.next == null) {
             return null;
         }
 
-        Node slow = head;
-        Node fast = head;
+        ListNode slow = head;
+        ListNode fast = head;
 
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
@@ -108,4 +111,91 @@ public class Solution {
         }
         return null;
     }
+
+    /**
+     * 合并两个递增有序的链表，最优解：递归实现
+     */
+    private static ListNode merge(ListNode h1, ListNode h2) {
+        if (h1 == null) {
+            return h2;
+        }
+        if (h2 == null) {
+            return h1;
+        }
+        ListNode head = null;
+        if (h1.val < h2.val) {
+            head = h1;
+            head.next = merge(h1.next, h2);
+        } else {
+            head = h2;
+            head.next = merge(h1, h2.next);
+        }
+        return head;
+    }
+
+    /**
+     * 删除链表倒数第n个结点，n保证是有效的
+     */
+    private static ListNode delNodeN(ListNode head, int n) {
+        if (head == null || n <= 0) {
+            return head;
+        }
+        ListNode first = head;
+        ListNode second = head;
+        for (int i = 0; i < n; i++) {
+            first = first.next;
+        }
+        if (first == null) {
+            return head.next;
+        }
+        while (first.next != null) {
+            first = first.next;
+            second = second.next;
+        }
+        second.next = second.next.next;
+        return head;
+    }
+
+    /**
+     * 求链表的中间结点，如果有两个中间结点，则返回第二个中间结点
+     */
+    private static ListNode findMiddle(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    public static void main(String[] args){
+
+        ListNode l1 = new ListNode(1);
+        ListNode l2 = new ListNode(2);
+        ListNode l3 = new ListNode(3);
+        ListNode l4 = new ListNode(4);
+        ListNode l5 = new ListNode(5);
+        l1.next = l2;
+        l2.next = l3;
+        l3.next = l4;
+        l4.next = l5;
+
+        ListNode head = l1;
+//        head = reverse(l1);
+//        head = delNodeN(l1, 2);
+        while (head != null) {
+            if (head.next != null) {
+                System.out.print(head.val + " --> ");
+            } else {
+                System.out.println(head.val);
+            }
+            head = head.next;
+        }
+        System.out.println(findMiddle(l1).val);
+    }
+
 }
