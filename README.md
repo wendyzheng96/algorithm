@@ -8,3 +8,6 @@
 
  [07 | 链表（下）：如何轻松写出正确的链表代码?](https://github.com/wendyzheng96/algorithm/blob/master/note/07.md)
 
+ [10 | 递归：如何用三行代码找到“最终推荐人”?](https://github.com/wendyzheng96/algorithm/blob/master/note/10.md)
+
+
