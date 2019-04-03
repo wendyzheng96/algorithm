@@ -14,5 +14,6 @@
 
  [12 | 排序（下）：如何用快排思想在O(n)内查找第K大元素？](https://github.com/wendyzheng96/algorithm/blob/master/note/12.md)
 
+ [13 | 线性排序：如何根据年龄给100万用户数据排序？](https://github.com/wendyzheng96/algorithm/blob/master/note/13.md)
 
 

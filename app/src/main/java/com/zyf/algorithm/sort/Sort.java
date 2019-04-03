@@ -117,7 +117,7 @@ public class Sort {
     /**
      * 快速排序,时间复杂度为O(nlogn),空间复杂度为O(1)
      */
-    private void quickSort(int[] a, int low, int high) {
+    public void quickSort(int[] a, int low, int high) {
         if (low >= high) {
             return;
         }
