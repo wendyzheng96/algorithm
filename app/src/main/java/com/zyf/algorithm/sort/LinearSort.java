@@ -3,6 +3,7 @@ package com.zyf.algorithm.sort;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * 线性排序
@@ -13,23 +14,13 @@ public class LinearSort {
      * 桶排序
      * @param a 数组
      * @param n 数组长度
+     * @param bucketSize 桶个数
      */
     private void bucketSort(int[] a, int n, int bucketSize) {
         if (n <= 1) {
             return;
         }
-
-        int max = a[0];//最大值
-        int min = a[0];//最小值
-        for (int num : a) {
-            if (num > max) {
-                max = num;
-            }
-            if (num < min) {
-                min = num;
-            }
-        }
-        ArrayList<Integer>[] buckets = new ArrayList[bucketSize];
+        List<Integer>[] buckets = new ArrayList[bucketSize];
 
         for (int i = 0; i < n; i++) {
             int tmp = a[i] / bucketSize;
