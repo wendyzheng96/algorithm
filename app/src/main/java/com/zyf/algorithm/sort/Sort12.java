@@ -1,13 +1,14 @@
+package com.zyf.algorithm.sort;
 
-## 12 | 排序（下）：如何用快排思想在O(n)内查找第K大元素？
+import java.util.Arrays;
 
-### 归并排序
+/**
+ * 排序
+ */
+public class Sort12 {
 
-代码实现：
-
-```
     /**
-     * 归并排序
+     * 归并排序,时间复杂度为O(nlogn),空间复杂度为O(n)
      */
     private void mergerSort(int[] a){
         int[] tmp = new int[a.length];
@@ -46,13 +47,7 @@
             a[low++] = tmp[t++];
         }
     }
-```
 
-### 快速排序
-
-代码实现：
-
-```
     /**
      * 快速排序,时间复杂度为O(nlogn),空间复杂度为O(1)
      */
@@ -80,66 +75,14 @@
         a[low] = tmp;
         return low;
     }
-```
-
-### 归并 vs 快速
-
-|       | 是否稳定?   | 空间复杂度 | 最好时间复杂度  | 最坏时间复杂度 | 平均时间复杂度|
-|-------|------------|-----------|------|-----|----|
-|归并排序|     是     |  O(n)        | O(nlogn) | O(nlogn)| O(nlogn)|
-|快速排序|     是     |  O(1)        | O(n) | O(nlogn)| O(n2)|
-
-#### 解答：如何用快排思想在O(n)内查找第K大元素？
-
-代码实现：
-```
-public class FindKth {
-
-    /**
-     * 求无序数组中的第 K 大元素
-     */
-    private int findKthMaxNum(int[] a, int k) {
-        if (a.length <= 0 || k > a.length || k <= 0) {
-            return -1;
-        }
-        int low = 0;
-        int high = a.length - 1;
-        int index = partition(a, low, high);
-        while (index != k -1) {
-            if (k > index + 1) {
-                low = index + 1;
-            } else {
-                high = index - 1;
-            }
-            index = partition(a, low, high);
-        }
-        return a[index];
-    }
-
-    private int partition(int[] a, int low, int high) {
-        int tmp = a[low];
-        while (low < high) {
-            while (low < high && a[high] <= tmp) {
-                high--;
-            }
-            a[low] = a[high];
-
-            while (low < high && a[low] >= tmp) {
-                low++;
-            }
-            a[high] = a[low];
-        }
-        a[low] = tmp;
-        return low;
-    }
 
     public static void main(String[] args) {
-        FindKth sort = new FindKth();
+        Sort12 sort = new Sort12();
         int[] a = {7, 1, 4, 3, 9, 6, 8, 5};
         System.out.println(Arrays.toString(a));
-        int num = sort.findKthMaxNum(a, 4);
-        System.out.println(num);
+        sort.mergerSort(a);
+//        sort.quickSort(a, 0, a.length - 1);
+        System.out.println(Arrays.toString(a));
     }
-}
 
-```
+}
