@@ -116,12 +116,23 @@ public class Sort13 {
     /**
      * 基数排序
      * @param a 数组
-     * @param d 最大位数
      */
-    private void radixSort(int[] a, int d){
+    private void radixSort(int[] a){
         if (a.length <= 1) {
             return;
         }
+
+        int d = 0;
+        int max = a[0];
+        for (int num : a) {
+            max = num > max ? num : max;
+        }
+        while (max > 0) {
+            max = max / 10;
+            d++;
+        }
+        System.out.println("最大位数: " + d);
+
         int[] tmp = new int[a.length];
         int[] bucket = new int[10];
         for (int i = 0, rate = 1; i < d; i++) {
@@ -133,7 +144,7 @@ public class Sort13 {
                 int subKey = (tmp[j] / rate) % 10;
                 bucket[subKey]++;
             }
-            for (int j = 0; j < 10; j++) {
+            for (int j = 1; j < 10; j++) {
                 bucket[j] += bucket[j - 1];
             }
             // 按子关键字对指定的数据进行排序
@@ -155,7 +166,8 @@ public class Sort13 {
         }
         System.out.println(Arrays.toString(a));
 //        sort.countingSort(a, a.length);
-        sort.bucketSort(a, a.length, 5);
+//        sort.bucketSort(a, a.length, 5);
+        sort.radixSort(a);
         System.out.println(Arrays.toString(a));
     }
 }
