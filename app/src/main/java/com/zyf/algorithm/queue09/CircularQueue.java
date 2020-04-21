@@ -1,7 +1,5 @@
 package com.zyf.algorithm.queue09;
 
-import java.util.Arrays;
-
 /**
  * 通过数组实现循环队列
  */

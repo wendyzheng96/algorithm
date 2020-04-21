@@ -8,7 +8,7 @@ import com.zyf.algorithm.ListNode;
 public class LinkedListSolution {
 
     /**
-     * 反转字符串
+     * 反转字链表
      * @param head 头结点
      */
     private static ListNode reverse(ListNode head) {
@@ -147,8 +147,8 @@ public class LinkedListSolution {
         l4.next = l5;
 
         ListNode head = l1;
-//        head = reverse(l1);
-//        head = delNodeN(l1, 2);
+        head = reverse(l1);
+        head = delNodeN(l1, 2);
         while (head != null) {
             if (head.next != null) {
                 System.out.print(head.val + " --> ");
