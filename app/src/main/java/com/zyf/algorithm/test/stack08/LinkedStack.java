@@ -1,4 +1,4 @@
-package com.zyf.algorithm.stack08;
+package com.zyf.algorithm.test.stack08;
 
 import com.zyf.algorithm.ListNode;
 

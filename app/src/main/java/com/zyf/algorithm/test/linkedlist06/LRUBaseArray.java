@@ -1,4 +1,4 @@
-package com.zyf.algorithm.linkedlist06;
+package com.zyf.algorithm.test.linkedlist06;
 
 /**
  * 基于数组实现LRU缓存算法

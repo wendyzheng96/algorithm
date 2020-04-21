@@ -1,4 +1,4 @@
-package com.zyf.algorithm.queue09;
+package com.zyf.algorithm.test.queue09;
 
 import java.util.Random;
 import java.util.Stack;

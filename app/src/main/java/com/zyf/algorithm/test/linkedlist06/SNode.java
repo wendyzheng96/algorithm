@@ -1,4 +1,4 @@
-package com.zyf.algorithm.linkedlist06;
+package com.zyf.algorithm.test.linkedlist06;
 
 /**
  * Created by zyf on 2019/3/23.

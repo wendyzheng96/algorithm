@@ -1,4 +1,4 @@
-package com.zyf.algorithm.linkedlist06;
+package com.zyf.algorithm.test.linkedlist06;
 
 import com.zyf.algorithm.ListNode;
 

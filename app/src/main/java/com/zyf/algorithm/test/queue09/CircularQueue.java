@@ -1,11 +1,9 @@
-package com.zyf.algorithm.queue09;
-
-import java.util.Arrays;
+package com.zyf.algorithm.test.queue09;
 
 /**
- * 使用数组实现队列
+ * 通过数组实现循环队列
  */
-public class ArrayQueue {
+public class CircularQueue {
 
     private String[] items;//数组
 
@@ -15,7 +13,7 @@ public class ArrayQueue {
 
     private int tail = 0;//队尾下标
 
-    public ArrayQueue(int n) {
+    public CircularQueue(int n) {
         items = new String[n];
         this.n = n;
     }
@@ -24,18 +22,11 @@ public class ArrayQueue {
      * 入队
      */
     private boolean enqueue(String item) {
-        if (tail == n) {//队列已满
-            if (head == 0) {
-                return false;
-            }
-            for (int i = head; i < tail; i++) {
-                items[i-head] = items[i];
-            }
-            tail -= head;
-            head = 0;
+        if ((tail + 1) % n == head) {//队列已满
+            return false;
         }
         items[tail] = item;
-        tail++;
+        tail = (tail + 1) % n;
         return true;
     }
 
@@ -47,32 +38,38 @@ public class ArrayQueue {
             return null;
         }
         String tmp = items[head];
-        head++;
+        head = (head + 1) % n;
         return tmp;
     }
 
     private void printAll() {
         if (0 == n) return;
-        for (int i = head; i < tail; ++i) {
+        for (int i = head; i % n != tail; ++i) {
             System.out.print(items[i] + " ");
         }
         System.out.println();
     }
 
     public static void main(String[] args) {
-        ArrayQueue queue = new ArrayQueue(5);
+        CircularQueue queue = new CircularQueue(5);
         queue.enqueue("1");
         queue.enqueue("2");
         queue.enqueue("3");
         queue.enqueue("4");
         queue.enqueue("5");
         queue.printAll();
-        System.out.println(queue.dequeue());
-        System.out.println(queue.dequeue());
+
+        System.out.println("dequeue " + queue.dequeue());
+        System.out.println("dequeue " + queue.dequeue());
         queue.printAll();
 
-        System.out.println(queue.enqueue("6"));
+        System.out.println("enqueue " + queue.enqueue("6"));
+        queue.printAll();
+
+        System.out.println("dequeue " + queue.dequeue());
+        System.out.println("dequeue " + queue.dequeue());
+        System.out.println("dequeue " + queue.dequeue());
+        System.out.println("dequeue " + queue.dequeue());
         queue.printAll();
     }
-
 }

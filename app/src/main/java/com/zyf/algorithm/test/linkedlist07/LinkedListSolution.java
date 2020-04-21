@@ -1,4 +1,4 @@
-package com.zyf.algorithm.linkedlist07;
+package com.zyf.algorithm.test.linkedlist07;
 
 import com.zyf.algorithm.ListNode;
 
@@ -8,7 +8,7 @@ import com.zyf.algorithm.ListNode;
 public class LinkedListSolution {
 
     /**
-     * 反转字链表
+     * 反转链表
      * @param head 头结点
      */
     private static ListNode reverse(ListNode head) {
