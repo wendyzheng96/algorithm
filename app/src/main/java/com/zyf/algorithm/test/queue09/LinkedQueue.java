@@ -1,6 +1,6 @@
 package com.zyf.algorithm.test.queue09;
 
-import com.zyf.algorithm.ListNode;
+import com.zyf.algorithm.bean.ListNode;
 
 /**
  * 通过链表实现队列

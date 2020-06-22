@@ -1,6 +1,6 @@
 package com.zyf.algorithm.test.linkedlist07;
 
-import com.zyf.algorithm.ListNode;
+import com.zyf.algorithm.bean.ListNode;
 
 /**
  * Created by zyf on 2019/3/22.

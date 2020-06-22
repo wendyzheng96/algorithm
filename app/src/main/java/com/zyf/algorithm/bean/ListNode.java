@@ -1,4 +1,4 @@
-package com.zyf.algorithm;
+package com.zyf.algorithm.bean;
 
 /**
  * Created by zyf on 2019/3/20.

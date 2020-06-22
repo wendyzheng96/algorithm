@@ -1,6 +1,6 @@
 package com.zyf.algorithm.leetcode;
 
-import com.zyf.algorithm.ListNode;
+import com.zyf.algorithm.bean.ListNode;
 
 /**
  * Leetcode
@@ -50,7 +50,8 @@ public class Solution {
     }
 
     /**
-     * 反转字链表
+     * 反转链表
+     * 方法1：循环
      * @param head 头结点
      */
     private ListNode reverse(ListNode head) {
@@ -65,4 +66,36 @@ public class Solution {
         return pre;
     }
 
+    /**
+     * 反转链表
+     * 方法2：递归
+     * @param head 头结点
+     */
+    private ListNode reverseRecursive(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode newHead = reverseRecursive(head.next);
+        head.next.next = head;
+        head.next = null;
+        return newHead;
+    }
+
+    /**
+     * 给你两个单链表，判断一个链表是不是另一个的反转
+     */
+    private boolean isReverse(ListNode head1, ListNode head2){
+        if (head1 == null || head2 == null) {
+            return false;
+        }
+        ListNode newNode = reverse(head1);
+        while (newNode != null && head2 != null) {
+            if (newNode.val != head2.val) {
+                return false;
+            }
+            newNode = newNode.next;
+            head2 = head2.next;
+        }
+        return newNode == null && head2 == null;
+    }
 }

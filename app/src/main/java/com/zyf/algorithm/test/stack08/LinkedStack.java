@@ -1,6 +1,6 @@
 package com.zyf.algorithm.test.stack08;
 
-import com.zyf.algorithm.ListNode;
+import com.zyf.algorithm.bean.ListNode;
 
 /**
  * 使用链表实现栈
