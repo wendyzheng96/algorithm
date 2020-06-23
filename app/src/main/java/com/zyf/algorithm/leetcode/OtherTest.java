@@ -1,5 +1,6 @@
 package com.zyf.algorithm.leetcode;
 
+import com.zyf.algorithm.bean.TreeLinkNode;
 import com.zyf.algorithm.bean.UndirectedGraphNode;
 
 import java.util.ArrayList;
@@ -130,5 +131,83 @@ public class OtherTest {
             }
         }
         return triangle.get(0).get(0);
+    }
+
+    /**
+     * LC32:给出一个索引k，返回杨辉三角的第k行
+     * 例如，k=3，
+     * 返回[1,3,3,1].
+     * 备注：
+     * 你能将你的算法优化到只使用O(k)的额外空间吗?
+     */
+    public List<Integer> getRow (int rowIndex){
+        List<Integer> list = new ArrayList<>();
+        if (rowIndex < 0){
+            return list;
+        }
+        for(int i = 0; i <= rowIndex; i++){
+            for(int j = i - 1; j > 0; j--){
+                list.set(j, list.get(j - 1) + list.get(j));
+            }
+            list.add(1);
+        }
+        return list;
+    }
+
+    /**
+     * LC33:给出一个值numRows，生成杨辉三角的前numRows行
+     * 例如，给出 numRows = 5,
+     * 返回
+     * [↵     [1],
+     *  ↵    [1,1],
+     *  ↵   [1,2,1],
+     *  ↵  [1,3,3,1],
+     *  ↵ [1,4,6,4,1]↵]
+     */
+    public List<List<Integer>> generate (int numRows){
+        List<List<Integer>> list = new ArrayList<>();
+        if(numRows < 0){
+            return list;
+        }
+        for(int i = 0; i < numRows; i++){
+            List<Integer> temp = new ArrayList<>();
+            for(int j = 0; j <= i; j++){
+                if(j == 0 || j == i){
+                    temp.add(1);
+                } else {
+                    temp.add(list.get(i - 1).get(j - 1) + list.get(i - 1).get(j));
+                }
+            }
+            list.add(temp);
+        }
+        return list;
+    }
+
+    /**
+     * LC36:给定一个字符串S和一个字符串T，计算S中的T的不同子序列的个数。
+     * 字符串的子序列是由原来的字符串删除一些字符（也可以不删除）在不改变相对位置的情况下的剩余字符
+     * （例如，"ACE"is a subsequence of"ABCDE"但是"AEC"不是）
+     * 例如：S ="rabbbit", T ="rabbit",返回3
+     */
+    public int numDistinct (String s, String t){
+        if(s.length() < t.length() || s.length() == 0){
+            return 0;
+        }
+        int m = s.length();
+        int n = t.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for(int i = 0; i <= m; i++){
+            dp[i][0] = 1;
+        }
+        for (int i = 1; i <= m; i++){
+            for (int j = 1; j <= n; j++){
+                if(s.charAt(i - 1) == t.charAt(j - 1)){
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+                } else {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+            }
+        }
+        return dp[m][n];
     }
 }
