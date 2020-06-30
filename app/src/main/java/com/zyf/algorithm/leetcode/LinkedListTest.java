@@ -3,6 +3,8 @@ package com.zyf.algorithm.leetcode;
 import com.zyf.algorithm.bean.ListNode;
 import com.zyf.algorithm.bean.RandomListNode;
 
+import java.util.List;
+
 /**
  * 链表相关
  */
@@ -85,5 +87,51 @@ public class LinkedListTest {
             head = temp;
         }
         return node;
+    }
+
+    /**
+     * LC67:删除给出链表中的重复元素（链表中元素从小到大有序），使链表中的所有元素都只出现一次
+     * 例如：
+     * 给出的链表为1->1->2,返回1->2.
+     * 给出的链表为1->1->2->3->3,返回1->2->3.
+     */
+    public ListNode deleteDuplicates (ListNode head){
+        if(head == null || head.next == null){
+            return head;
+        }
+        ListNode node = head;
+        while(node.next != null){
+            if(node.next.val == node.val){
+                node.next = node.next.next;
+            } else {
+                node = node.next;
+            }
+        }
+        return head;
+    }
+
+    /**
+     * LC85:将两个有序的链表合并为一个新链表，要求新的链表是通过拼接两个链表的节点来生成的。
+     */
+    public ListNode mergeTwoLists (ListNode l1, ListNode l2){
+        ListNode pHead = new ListNode(-1);
+        ListNode node = pHead;
+        while(l1 != null && l2 != null){
+            if(l1.val <= l2.val){
+                node.next = l1;
+                l1 = l1.next;
+            } else {
+                node.next = l2;
+                l2 = l2.next;
+            }
+            node = node.next;
+        }
+        if(l1 != null){
+            node.next = l1;
+        }
+        if(l2 != null){
+            node.next = l2;
+        }
+        return pHead.next;
     }
 }

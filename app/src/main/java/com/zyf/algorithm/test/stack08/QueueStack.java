@@ -16,7 +16,7 @@ public class QueueStack {
         queue1.offer(num);
     }
 
-    private int pop(){
+    private Integer pop(){
         if (queue1.isEmpty() && queue2.isEmpty()) {
             return -1;
         }

@@ -210,4 +210,49 @@ public class OtherTest {
         }
         return dp[m][n];
     }
+
+    /**
+     * LC140:在不使用额外的内存空间的条件下判断一个整数是否是回文
+     * 提示：
+     * 负整数可以是回文吗？（比如-1）
+     * 如果你在考虑将数字转化为字符串的话，请注意一下不能使用额外空间的限制
+     * 你可以将整数翻转。但是，如果你做过题目“Reverse Integer”，你会知道将整数翻转可能会出现溢出的情况，你怎么处理这个问题？
+     * 这道题有更具普遍性的解法。
+     */
+    public boolean isPalindrome (int x){
+        if(x >= 0 && x < 10){
+            return true;
+        }
+        if(x < 0 || x % 10 == 0){
+            return false;
+        }
+        int num = 0;
+        while(num < x){
+            num = num * 10 + x % 10;
+            x /= 10;
+        }
+        return x == num || x == num / 10;
+    }
+
+    /**
+     * LC142:将给出的整数x翻转。
+     * 例1:x=123，返回321
+     * 例2:x=-123，返回-321
+     *
+     * 你有思考过下面的这些问题么？
+     * 如果整数的最后一位是0，那么输出应该是什么？比如10,100
+     * 你注意到翻转后的整数可能溢出吗？假设输入是32位整数，则将翻转10000000003就会溢出，你该怎么处理这样的样例？
+     * 抛出异常？这样做很好，但是如果不允许抛出异常呢？这样的话你必须重新设计函数（比如添加一个额外的参数）。
+     */
+    public int reverse (int x){
+        long num = 0;
+        while(x != 0){
+            num = num * 10 + x % 10;
+            x /= 10;
+        }
+        if(num > Integer.MAX_VALUE || num < Integer.MIN_VALUE){
+            return 0;
+        }
+        return (int)num;
+    }
 }

@@ -405,7 +405,7 @@ public class TreeTest {
     }
 
     /**
-     * LC48:给定一棵二叉树，判断琪是否是自身的镜像（即：是否对称）
+     * LC48:给定一棵二叉树，判断其是否是自身的镜像（即：是否对称）
      */
     public boolean isSymmetric (TreeNode root){
         if(root == null){
@@ -439,5 +439,48 @@ public class TreeTest {
             return false;
         }
         return isSymmetric(p.left, q.left) && isSymmetric(p.right, q.right);
+    }
+
+    /**
+     * LC54:给定一个值n，能构建出多少不同的值包含1...n的二叉搜索树（BST）？
+     * 例如
+     * 给定 n = 3, 有五种不同的二叉搜索树（BST）
+     */
+    public int numTrees (int n){
+        if(n <= 1){
+            return 1;
+        }
+        int[] f = new int[n + 1];
+        f[0] = 1;
+        f[1] = 1;
+        for(int i = 2; i <= n; i++){
+            for(int j = 0; j < i; j++){
+                f[i] = f[j] * f[i - 1 - j];
+            }
+        }
+        return f[n];
+    }
+
+    /**
+     * LC55:给出一棵二叉树，返回这棵树的中序遍历
+     */
+    public List<Integer> inorderTraversal (TreeNode root){
+        List<Integer> list = new ArrayList<>();
+        if(root == null){
+            return list;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = root;
+        while(!stack.isEmpty() || cur != null){
+            if(cur != null){
+                stack.push(cur);
+                cur = cur.left;
+            } else {
+                cur = stack.pop();
+                list.add(cur.val);
+                cur = cur.right;
+            }
+        }
+        return list;
     }
 }
