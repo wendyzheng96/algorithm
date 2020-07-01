@@ -442,6 +442,85 @@ public class TreeTest {
     }
 
     /**
+     * LC50:二叉搜索树（BST）中的两个节点被错误地交换了，
+     * 请在不改变树的结构的情况下恢复这棵树。
+     * 备注；
+     * 用O(n)的空间解决这个问题的方法太暴力了，你能设计一个常数级空间复杂度的算法么？
+     * 如果你不清楚“{1,#,2,3}"的含义的话，请继续阅读
+     * 我们用如下方法将二叉树序列化：
+     * 二叉树的序列化遵循层序遍历的原则，”#“代表该位置是一条路径的终结，下面不再存在结点。
+     */
+    public void recoverTree(TreeNode root){
+        if(root == null){
+            return;
+        }
+        TreeNode pre, p, q;
+        pre = p = q = null;
+        TreeNode cur = root;
+        Stack<TreeNode> stack = new Stack<>();
+        while (!stack.isEmpty() || cur != null){
+            if(cur != null){
+                stack.push(cur);
+                cur = cur.left;
+            } else {
+                cur = stack.pop();
+                if(pre != null && pre.val > cur.val){
+                    if(p == null){
+                        p = pre;
+                    }
+                    q = cur;
+                }
+                pre = cur;
+                cur = cur.right;
+            }
+        }
+        swap(p, q);
+    }
+
+    private void swap(TreeNode p, TreeNode q){
+        int temp = p.val;
+        p.val = q.val;
+        q.val = temp;
+    }
+
+    /**
+     * LC51:判断给出的二叉树是否是一个二叉搜索树（BST）
+     * 二叉搜索树的定义如下
+     * 一个节点的左子树上节点的值都小于自身的节点值
+     * 一个节点的右子树上节点的值都大于自身的节点值
+     * 所有节点的左右子树都必须是二叉搜索树
+     */
+    public boolean isValidBST (TreeNode root){
+        if(root == null){
+            return true;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode pre = null;
+        TreeNode cur = root;
+        while (!stack.isEmpty() || cur != null){
+            if(cur != null){
+                stack.push(cur);
+                cur = cur.left;
+            } else {
+                cur = stack.pop();
+                if(pre != null && pre.val > cur.val){
+                    return false;
+                }
+                pre = cur;
+                cur = cur.right;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * LC53:给定一个值n,请生成所有的存储值1...n.的二叉搜索树（BST）的结构
+     */
+//    public ArrayList<TreeNode> generateTrees (int n){
+//
+//    }
+
+    /**
      * LC54:给定一个值n，能构建出多少不同的值包含1...n的二叉搜索树（BST）？
      * 例如
      * 给定 n = 3, 有五种不同的二叉搜索树（BST）
