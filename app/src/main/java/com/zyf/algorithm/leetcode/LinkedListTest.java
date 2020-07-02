@@ -90,12 +90,60 @@ public class LinkedListTest {
     }
 
     /**
+     * LC63:给出一个链表和一个值x，以x为参照将链表划分成两部分，使所有小于x的节点都位于大于或等于x的节点之前。
+     * 两个部分之内的节点之间要保持的原始相对顺序。
+     * 例如：
+     * 给出1->4->3->2->5->2和x = 3,
+     * 返回1->2->2->4->3->5.
+     */
+    public ListNode partition (ListNode head, int x){
+        ListNode lowPre = new ListNode(-1);
+        ListNode low = lowPre;
+        ListNode highPre = new ListNode(-1);
+        ListNode high = highPre;
+        while (head != null){
+            if(head.val < x){
+                low.next = head;
+                low = low.next;
+            } else {
+                high.next = head;
+                high = high.next;
+            }
+            head = head.next;
+        }
+        high.next = null;
+        low.next = highPre.next;
+        return lowPre.next;
+    }
+
+    /**
+     * LC66:给出一个排好序的链表，删除链表中的所有重复出现的元素，只保留原链表中只出现一次的元素。
+     * 例如：
+     * 给出的链表为1->2->3->3->4->4->5, 返回1->2->5.
+     * 给出的链表为1->1->1->2->3,  返回2->3.
+     */
+    public ListNode deleteDuplicates (ListNode head){
+        if(head == null || head.next == null){
+            return head;
+        }
+        if(head.val != head.next.val){
+            head.next = deleteDuplicates(head.next);
+            return head;
+        }
+        ListNode node = head.next.next;
+        while (node != null && node.val == head.val){
+            node = node.next;
+        }
+        return deleteDuplicates2(node);
+    }
+
+    /**
      * LC67:删除给出链表中的重复元素（链表中元素从小到大有序），使链表中的所有元素都只出现一次
      * 例如：
      * 给出的链表为1->1->2,返回1->2.
      * 给出的链表为1->1->2->3->3,返回1->2->3.
      */
-    public ListNode deleteDuplicates (ListNode head){
+    public ListNode deleteDuplicates2 (ListNode head){
         if(head == null || head.next == null){
             return head;
         }

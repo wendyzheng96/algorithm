@@ -1,6 +1,5 @@
 package com.zyf.algorithm.leetcode;
 
-import com.zyf.algorithm.bean.TreeLinkNode;
 import com.zyf.algorithm.bean.UndirectedGraphNode;
 
 import java.util.ArrayList;
@@ -184,31 +183,189 @@ public class OtherTest {
     }
 
     /**
-     * LC36:给定一个字符串S和一个字符串T，计算S中的T的不同子序列的个数。
-     * 字符串的子序列是由原来的字符串删除一些字符（也可以不删除）在不改变相对位置的情况下的剩余字符
-     * （例如，"ACE"is a subsequence of"ABCDE"但是"AEC"不是）
-     * 例如：S ="rabbbit", T ="rabbit",返回3
+     * LC60:格雷码是一种二进制编码系统，如果任意两个相邻的代码只有一位二进制数不同，则称这种编码为格雷码（Gray Code）。
+     * 给定一个非负整数n，表示代码的位数，打印格雷码的序列。格雷码序列必须以0开头。
+     * 例如：给定n=2，返回[0,1,3,2]. 格雷码的序列为：
+     * 00 - 0↵01 - 1↵11 - 3↵10 - 2
+     * 注意：
+     * 对于一个给定的n，格雷码的序列不一定是唯一的，
+     * 例如：根据题目描述，[0,2,3,1]也是一个有效的格雷码序列
      */
-    public int numDistinct (String s, String t){
-        if(s.length() < t.length() || s.length() == 0){
-            return 0;
+    public List<Integer> grayCode (int n){
+        List<Integer> list = new ArrayList<>();
+        if(n == 0){
+            return list;
         }
-        int m = s.length();
-        int n = t.length();
-        int[][] dp = new int[m + 1][n + 1];
-        for(int i = 0; i <= m; i++){
-            dp[i][0] = 1;
-        }
-        for (int i = 1; i <= m; i++){
-            for (int j = 1; j <= n; j++){
-                if(s.charAt(i - 1) == t.charAt(j - 1)){
-                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
-                } else {
-                    dp[i][j] = dp[i - 1][j - 1];
-                }
+        list.add(0);
+        for(int i = 0; i < n; i++){
+            int len = list.size();
+            for(int j = 0; j < len; j++){
+                list.add(list.get(j) | (1 << i));
             }
         }
-        return dp[m][n];
+        return list;
+    }
+
+    /**
+     * LC62:给定一个字符串 s1，我们可以把它递归地分割成两个非空子字符串，从而将其表示为二叉树。
+     *
+     * 下图是字符串 s1 = "great" 的一种可能的表示形式。
+     *
+     *     great
+     *    /    \
+     *   gr    eat
+     *  / \    /  \
+     * g   r  e   at
+     *            / \
+     *           a   t
+     * 在扰乱这个字符串的过程中，我们可以挑选任何一个非叶节点，然后交换它的两个子节点。
+     *
+     * 例如，如果我们挑选非叶节点 "gr" ，交换它的两个子节点，将会产生扰乱字符串 "rgeat" 。
+     *
+     *     rgeat
+     *    /    \
+     *   rg    eat
+     *  / \    /  \
+     * r   g  e   at
+     *            / \
+     *           a   t
+     * 我们将 "rgeat” 称作 "great" 的一个扰乱字符串。
+     *
+     * 同样地，如果我们继续交换节点 "eat" 和 "at" 的子节点，将会产生另一个新的扰乱字符串 "rgtae" 。
+     *
+     *     rgtae
+     *    /    \
+     *   rg    tae
+     *  / \    /  \
+     * r   g  ta  e
+     *        / \
+     *       t   a
+     * 我们将 "rgtae” 称作 "great" 的一个扰乱字符串。
+     *
+     * 给出两个长度相等的字符串 s1 和 s2，判断 s2 是否是 s1 的扰乱字符串。
+     */
+    public boolean isScramble (String s1, String s2){
+        if(s1.equals(s2)){
+            return true;
+        }
+        if(s1.length() != s2.length()){
+            return false;
+        }
+        int len = s1.length();
+        int[] a = new int[128];
+        for(int i = 0; i < len; i++){
+            a[s1.charAt(i)]++;
+            a[s2.charAt(i)]--;
+        }
+        for(int num : a){
+            if(num != 0){
+                return false;
+            }
+        }
+        for(int i = 1; i < len; i++){
+            boolean isMatch = (isScramble(s1.substring(0, i), s2.substring(0, i))
+                    && isScramble(s1.substring(i), s2.substring(i)))
+                    ||(isScramble(s1.substring(0, i), s2.substring(len - i))
+                    && isScramble(s1.substring(i), s2.substring(0, len - i)));
+            if(isMatch){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * LC73:给出两个字符串S和T，要求在O（n）的时间复杂度内在S中找出最短的包含T中所有字符的子串。
+     * 例如：
+     * S ="ADOBECODEBANC"
+     * T ="ABC"
+     * 找出的最短子串为"BANC".
+     * 注意：
+     * 如果S中没有包含T中所有字符的子串，返回空字符串 “”；
+     * 满足条件的子串可能有很多，但是题目保证满足条件的最短的子串唯一。
+     */
+    public String minWindow (String S, String T){
+        if(S.length() == 0 || S.length() < T.length()){
+            return "";
+        }
+        int head = 0;
+        int minLen = S.length() + 1;
+        int count = T.length();
+        int start = 0;
+        int end = 0;
+        int[] a = new int[128];
+        for(int i = 0; i < T.length(); i++){
+            a[T.charAt(i)]++;
+        }
+        while (end < S.length()){
+            if(a[S.charAt(end)] > 0){
+                count--;
+            }
+            a[S.charAt(end++)]--;
+            while(count == 0){
+                if(end - start < minLen){
+                    minLen = end - start;
+                    head = start;
+                }
+                if(a[S.charAt(start)] >= 0){
+                    count++;
+                }
+                a[S.charAt(start++)]++;
+            }
+        }
+        if(minLen > S.length()){
+            return "";
+        }
+        return S.substring(head, head + minLen);
+    }
+
+    /**
+     * LC80:实现函数 int sqrt(int x).
+     * 计算并返回x的平方根
+     */
+    public int sqrt (int x){
+        if(x < 0){
+            return x;
+        }
+        if(x <= 1){
+            return x;
+        }
+        long low = 1;
+        long high = x / 2;
+        while (low <= high){
+            long mid = (low + high) / 2;
+            if(x == mid * mid){
+                return (int)mid;
+            } else if( x < mid * mid){
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return (int)high;
+    }
+
+    /**
+     * LC84:给出两个用字符串表示的二进制数，返回他们的和（也用字符串表示）
+     * 例如：
+     * a ="11", b ="1", 返回"100".
+     */
+    public String addBinary (String a, String b){
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+        int carry = 0;
+        StringBuilder sb = new StringBuilder();
+        while(i >= 0 || j >= 0 || carry != 0){
+            if(i >= 0){
+                carry += a.charAt(i--) - '0';
+            }
+            if(j >= 0){
+                carry += b.charAt(j--) - '0';
+            }
+            sb.append(carry % 2);
+            carry = carry >> 1;
+        }
+        return sb.reverse().toString();
     }
 
     /**
