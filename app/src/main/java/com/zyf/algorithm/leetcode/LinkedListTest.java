@@ -182,4 +182,91 @@ public class LinkedListTest {
         }
         return pHead.next;
     }
+
+    /**
+     * LC125:reverse-nodes-in-k-group
+     * 将给出的链表中的节点每k个一组翻转，返回翻转后的链表
+     * 如果链表中的节点数不是k的倍数，将最后剩下的节点保持原样
+     * 你不能更改节点中的值，只能更改节点本身。
+     * 只允许使用常数级的空间
+     * 例如：
+     * 给定的链表是1->2->3->4->5
+     *
+     * 对于 k = 2, 你应该返回 2->1->4->3->5
+     *
+     * 对于 k = 3, y你应该返回 3->2->1->4->5
+     */
+    public ListNode reverseKGroup(ListNode head, int k){
+        if(head == null || head.next == null){
+            return head;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode pre = dummy;
+        ListNode tail = dummy;
+        while (tail.next != null){
+            for(int i = 0; i < k - 1 && tail != null; i++){
+                tail = tail.next;
+            }
+            if(tail == null){
+                break;
+            }
+            ListNode start = pre.next;
+            ListNode next = tail.next;
+
+            tail.next = null;
+            pre.next = reverse(start);
+
+            start.next = next;
+            pre = start;
+            tail = pre;
+        }
+        return dummy.next;
+    }
+
+    private ListNode reverse(ListNode head){
+        ListNode pre = null;
+        ListNode next;
+        while (head != null){
+            next = head.next;
+            head.next = pre;
+            pre = head;
+            head = next;
+        }
+        return pre;
+    }
+
+    /**
+     * LC126:swap-nodes-in-pairs
+     * 将给定的链表中每两个相邻的节点交换一次，返回链表的头指针
+     * 例如,
+     * 给出1->2->3->4，你应该返回链表2->1->4->3。
+     * 你给出的算法只能使用常量级的空间。你不能修改列表中的值，只能修改节点本身。
+     */
+    public ListNode swapPairs (ListNode head){
+        if(head == null || head.next == null){
+            return head;
+        }
+        //1.递归
+//        ListNode newHead = head.next;
+//        ListNode temp = head.next.next;
+//        newHead.next = head;
+//        head.next = swapPairs(temp);
+//        return newHead;
+
+        //2.迭代
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode pre = dummy;
+        while(head != null && head.next != null){
+            ListNode temp = head.next;
+            head.next = temp.next;
+            temp.next = head;
+            pre.next = temp;
+
+            pre = head;
+            head = head.next;
+        }
+        return dummy.next;
+    }
 }

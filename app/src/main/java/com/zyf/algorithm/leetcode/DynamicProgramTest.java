@@ -146,6 +146,37 @@ public class DynamicProgramTest {
     }
 
     /**
+     * LC77:edit_distance
+     * 给定两个单词word1和word2，请计算将word1转换为word2至少需要多少步操作。
+     * 你可以对一个单词执行以下3种操作：
+     * a）在单词中插入一个字符
+     * b）删除单词中的一个字符
+     * c）替换单词中的一个字符
+     */
+    public int minDistance (String word1, String word2){
+        int m = word1.length();
+        int n = word2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for(int i = 0; i <= m; i++){
+            dp[i][0] = i;
+        }
+        for(int j = 1; j <= n; j++){
+            dp[j][0] = j;
+        }
+        for (int i = 1; i <= m; i++){
+            for(int j = 1; j <= n; j++){
+                if(word1.charAt(i - 1) == word1.charAt(j - 1)){
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    int min = Math.min(dp[i - 1][j], dp[i][j - 1]);
+                    dp[i][j] = Math.min(min, dp[i - 1][j - 1]) + 1;
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    /**
      * LC86:给定一个由非负整数填充的m x n的二维数组，现在要从二维数组的左上角走到右下角，
      * 请找出路径上的所有数字之和最小的路径。
      * 注意：你每次只能向下或向右移动。
@@ -170,5 +201,99 @@ public class DynamicProgramTest {
             }
         }
         return dp[m - 1][n - 1];
+    }
+
+    /**
+     * LC88:unique_path
+     * 一个机器人在m×n大小的地图的左上角（起点，下图中的标记“start"的位置）。
+     * 机器人每次向下或向右移动。机器人要到达地图的右下角。（终点，下图中的标记“Finish"的位置）。
+     * 可以有多少种不同的路径从起点走到终点？
+     */
+    public int uniquePaths (int m, int n){
+        int[][] dp = new int[m][n];
+        for (int i = 0; i < m; i++){
+            dp[i][0] = 1;
+        }
+        for(int j = 1; j < n; j++){
+            dp[0][j] = 1;
+        }
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+
+    /**
+     * LC86:继续思考题目"Unique Paths":
+     * 如果在图中加入了一些障碍，有多少不同的路径？
+     * 分别用0和1代表空区域和障碍
+     * 例如
+     * 下图表示有一个障碍在3*3的图中央。
+     * [↵  [0,0,0],↵  [0,1,0],↵  [0,0,0]↵]
+     * 有2条不同的路径
+     * 备注：m和n不超过100.
+     */
+    public int uniquePathsWithObstacles (int[][] obstacleGrid){
+        if(obstacleGrid.length == 0 || obstacleGrid[0].length == 0){
+            return 0;
+        }
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        if(obstacleGrid[0][0] == 1 || obstacleGrid[m - 1][n - 1] == 1){
+            return 0;
+        }
+        int[][] dp = new int[m][n];
+        for(int i = 0; i < m; i++){
+            if (obstacleGrid[i][0] == 1){
+                break;
+            }
+            dp[i][0] = 1;
+        }
+        for(int j = 1; j < n; j++){
+            if(obstacleGrid[0][j] == 1){
+                break;
+            }
+            dp[0][j] = 1;
+        }
+        for(int i = 1; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(obstacleGrid[i][j] == 1){
+                    dp[i][j] = 0;
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                }
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+
+    /**
+     * LC128:generate-parenthesis
+     * 给出n对括号，请编写一个函数来生成所有的由n对括号组成的合法组合。
+     * 例如，给出n=3，解集为：
+     * "((()))", "(()())", "(())()", "()(())", "()()()"
+     */
+    public List<String> generateParenthesis (int n){
+        List<String> list = new ArrayList<>();
+        if(n == 0){
+            return list;
+        }
+        generate(list, n, 0, 0, "");
+        return list;
+    }
+
+    private void generate(List<String> list, int n, int left, int right, String s){
+        if(right == n){
+            list.add(s);
+            return;
+        }
+        if(left < n){
+            generate(list, n, left + 1, right, s + "(");
+        }
+        if(right < left && right < n){
+            generate(list, n, left, right + 1, s + ")");
+        }
     }
 }

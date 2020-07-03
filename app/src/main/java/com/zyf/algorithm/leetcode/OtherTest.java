@@ -5,7 +5,9 @@ import com.zyf.algorithm.bean.UndirectedGraphNode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -366,6 +368,169 @@ public class OtherTest {
             carry = carry >> 1;
         }
         return sb.reverse().toString();
+    }
+
+    /**
+     * LC92:length-of-last-word
+     * 给出一个只包含大小写字母和空格的字符串s，请返回字符串中最后一个单词的长度
+     * 如果字符串中没有最后一个单词，则返回0
+     * 注意：单词的定义是仅由非空格字符组成的字符序列。
+     * 例如：
+     * s ="Hello World",
+     * 返回5。
+     */
+    public int lengthOfLastWord(String s){
+        if(s == null || s.length() == 0){
+            return 0;
+        }
+        int count = 0;
+        int index = s.length() - 1;
+        while (index >= 0 && s.charAt(index) == ' '){
+            index--;
+        }
+        while (index >= 0 && s.charAt(index) != ' '){
+            count++;
+            index--;
+        }
+        return count;
+    }
+
+    /**
+     * LC101:anagrams
+     * 给出一个字符串数组，返回所有互为“换位词（anagrams）”的字符串的组合。
+     * （换位词就是包含相同字母，但字母顺序可能不同的字符串）
+     * 备注：所有的输入都是小写字母
+     * 例如：
+     * 输入["tea","nat","ate","eat","tan"]
+     * 返回
+     * [["ate", "eat","tea"],["nat","tan"]]
+     */
+    public List<List<String>> groupAnagrams(String[] strs){
+        List<List<String>> list = new ArrayList<>();
+        if(strs == null || strs.length == 0){
+            return list;
+        }
+        HashMap<String, List<String>> map = new HashMap<>();
+        for(String s : strs){
+            char[] ch = s.toCharArray();
+            Arrays.sort(ch);
+            String baseStr = new String(ch);
+            if (!map.containsKey(baseStr)){
+                map.put(s, new ArrayList<String>());
+            }
+            map.get(baseStr).add(s);
+        }
+        for(String s : map.keySet()){
+            list.add(map.get(s));
+        }
+        return list;
+    }
+
+    /**
+     * LC112: count-and-say
+     * 数列的前几项如下：
+     * 1, 11, 21, 1211, 111221, ...
+     * 1读作“1个1”或11
+     * 11读作“2个1“或者21
+     * 21读作”1个2，1个1“或者1211
+     * 给出一个整数n，请给出序列的第n项
+     * 注意：序列中的数字用字符串表示
+     * 示例1
+     * 输入:2,输出:"11"
+     */
+    public String countAndSay (int n){
+        if(n <= 0){
+            return "";
+        }
+        String result = "1";
+        for(int i = 1; i < n; i++){
+            StringBuilder sb = new StringBuilder();
+            int count = 1;
+            char ch = result.charAt(0);
+            for(int j = 1; j < result.length(); j++){
+                if(result.charAt(j) == ch){
+                    count++;
+                } else {
+                    sb.append(count).append(ch);
+                    count = 1;
+                    ch = result.charAt(j);
+                }
+            }
+            sb.append(count).append(ch);
+            result = sb.toString();
+        }
+        return result;
+    }
+
+    /**
+     * LC114:valid-sudoku
+     * 根据数独的规则Sudoku Puzzles - The Rules.判断给出的局面是不是一个符合规则的数独局面
+     * 数独盘面可以被部分填写，空的位置用字符'.'.表示
+     */
+    public boolean isValidSudoku(char[][] board){
+        int n = board.length;
+        for(int i = 0; i < n; i++){
+            Set<Character> row = new HashSet<>();
+            Set<Character> col = new HashSet<>();
+            Set<Character> cube = new HashSet<>();
+            for(int j = 0; j < n; j++){
+                if(board[i][j] != '.' && !row.add(board[i][j])){
+                    return false;
+                }
+                if(board[j][i] != '.' && !col.add(board[j][i])){
+                    return false;
+                }
+                int cubeRow = 3 * (i / 3) + j / 3;
+                int cubeCol = 3 * (i % 3) + j % 3;
+                if(board[cubeRow][cubeCol] != '.' && !col.add(board[cubeRow][cubeCol])){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * LC119:实现函数next permutation（下一个排列）：
+     * 将排列中的数字重新排列成字典序中的下一个更大的排列。将排列中的数字重新排列成字典序中的下一个更大的排列。
+     * 如果不存在这样的排列，则将其排列为字典序最小的排列（升序排列）
+     * 需要使用原地算法来解决这个问题，不能申请额外的内存空间
+     * 下面有机组样例，左边是输入的数据，右边是输出的答案
+     * 1,2,3→1,3,2
+     * 3,2,1→1,2,3
+     * 1,1,5→1,5,1
+     */
+    public void nextPermutation(int[] num){
+        if(num == null || num.length <= 1){
+            return;
+        }
+        int len = num.length;
+        int i = len - 2;
+        while(i >= 0 && num[i] >= num[i + 1]){
+            i--;
+        }
+        if(i == -1){
+            reverse(num, 0, len - 1);
+            return;
+        }
+        int j = len - 1;
+        while (j > i && num[j] <= num[i]){
+            j--;
+        }
+        swap(num, i, j);
+        reverse(num, i + 1, len - 1);
+    }
+
+    public void reverse(int[] num, int start, int end){
+        while (start < end){
+            swap(num, start++, end--);
+        }
+    }
+
+    private void swap(int[] num, int i, int j){
+        int temp = num[i];
+        num[i] = num[j];
+        num[j] = temp;
     }
 
     /**

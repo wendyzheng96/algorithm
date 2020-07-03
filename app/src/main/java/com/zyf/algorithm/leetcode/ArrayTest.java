@@ -252,6 +252,125 @@ public class ArrayTest {
     }
 
     /**
+     * LC95:jump-game
+     * 给出一个非负整数数组，你最初在数组第一个元素的位置
+     *
+     * 数组中的元素代表你在这个位置可以跳跃的最大长度
+     * 判断你是否能到达数组最后一个元素的位置
+     * 例如
+     * A =[2,3,1,1,4], 返回 true.
+     *
+     * A =[3,2,1,0,4], 返回 false
+     */
+    public boolean canJump (int[] A){
+        if(A.length == 1){
+            return true;
+        }
+        int index = A.length - 2;
+        int n = 1;
+        while (index >= 0){
+            if(A[index] >= n){
+                n = 1;
+            } else {
+                n++;
+            }
+            index--;
+        }
+        return n == 1;
+    }
+
+    /**
+     * LC105:jump-game-II
+     * 给出一个非负整数数组，你最初在数组第一个元素的位置
+     * 数组中的元素代表你在这个位置可以跳跃的最大长度
+     * 你的目标是用最少的跳跃次数来到达数组的最后一个元素的位置
+     * 给定一个非负整数数组，你最初位于数组的第一个位置。
+     * 示例:
+     * 输入: [2,3,1,1,4]
+     * 输出: 2
+     * 解释: 跳到最后一个位置的最小跳跃数是 2。
+     *      从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
+     * 说明:假设你总是可以到达数组的最后一个位置。
+     */
+    public int jump (int[] A){
+        if(A.length <= 1){
+            return 0;
+        }
+        int step = 0;
+        int end = 0;//跳跃边界
+        int maxPos = 0;
+        for(int i = 0; i < A.length - 1; i++){
+            if(A[i] + i > maxPos){
+                maxPos = A[i] + i;
+            }
+            if(i == end){
+                end = maxPos;
+                step++;
+            }
+        }
+        return step;
+    }
+
+    /**
+     * LC108:trapping-rain_water
+     * 给出n个数字，表示一个高程图，高程图中每一条的宽度为1，请计算下雨之后这个地形可以存储多少水
+     * 例如
+     * 给出[0,1,0,2,1,0,1,3,2,1,2,1],返回6.
+     */
+    public int trap (int[] A){
+        if(A == null || A.length <= 2){
+            return 0;
+        }
+        int leftMax = A[0];
+        int rightMax = A[A.length - 1];
+        int left = 1;
+        int right = A.length - 2;
+        int sum = 0;
+        while (left <= right){
+            if(leftMax < rightMax){
+                if(leftMax - A[left] > 0){
+                    sum += leftMax - A[left];
+                }
+                leftMax = Math.max(leftMax, A[left]);
+                left++;
+            } else {
+                if(rightMax - A[right] > 0){
+                    sum += rightMax - A[right];
+                }
+                rightMax = Math.max(rightMax, A[right]);
+                right--;
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * LC115:search-insert-position
+     * 给出一个有序的数组和一个目标值，如果数组中存在该目标值，则返回该目标值的下标。
+     * 如果数组中不存在该目标值，则返回如果将该目标值插入这个数组应该插入的位置的下标
+     * 假设数组中没有重复项。
+     */
+    public int searchInsert (int[] A, int target){
+        if(A.length == 0){
+            return 0;
+        }
+        int left = 0;
+        int right = A.length - 1;
+        while(left <= right){
+            int mid = (left + right) >> 1;
+            if(A[mid] == target){
+                return mid;
+            }
+            if(target < A[mid]){
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
+    /**
      * LC123:给定一个数组和一个值，使用就地算法将数组中所有等于这个值的元素删除，并返回新数组的长度。
      * 元素的顺序可以更改。你不用去关心大于当前数组长度的空间里面存储的值
      */
